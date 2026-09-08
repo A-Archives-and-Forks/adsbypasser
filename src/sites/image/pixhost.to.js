@@ -9,27 +9,12 @@ _.register({
     path: /^\/show\//,
   },
   async ready() {
-    const button = document.querySelector("[data-age-gate-enter]");
-    if (button) {
-      button.click();
-      // Wait briefly for Pixhost's click handler to set the
-      // verification cookie. Usually only one or two iterations
-      // are needed.
-      for (let i = 0; i < 20; i++) {
-        if (document.cookie.includes("pixhost_age_verified=1")) {
-          break;
-        }
-        await _.wait(25);
-      }
+    let b = $.$(".age-gate__enter");
+    if (b) {
+      b.click();
     }
-    const image = document.querySelector("#image");
-    if (!image) {
-      return;
-    }
-    const url = image.currentSrc || image.src;
-    if (!url) {
-      return;
-    }
-    location.replace(url);
+    await _.wait(3000);
+    b = $("#image");
+    await $.openImage(b.src);
   },
 });
